@@ -35,12 +35,30 @@ abstract type AbstractPℓEmulator end
     OutMinMax::Array{Float64} = zeros(40,2)
 end
 
+abstract type AbstractCompleteEmulator end
+
+@kwdef mutable struct CompleteEmulator <: AbstractCompleteEmulator
+    rgrid::Array
+    PℓMono::AbstractPℓEmulator
+    PℓQuadru::AbstractPℓEmulator
+    PℓHexadeca::AbstractPℓEmulator
+end
+
+function ComputePℓs(input_params, Pℓs_emu::CompleteEmulator)
+    output = zeros(3, length(Pℓs_emu.rgrid))
+    output[1,:] = ComputePℓ(input_params, Pℓs_emu.PℓMono)
+    output[2,:] = ComputePℓ(input_params, Pℓs_emu.PℓQuadru)
+    output[3,:] = ComputePℓ(input_params, Pℓs_emu.PℓHexadeca)
+    return output
+end
+
+
 function ComputePℓ(input_params, Pℓ_emu::PℓEmulator)
     input = deepcopy(input_params)
     maximin_input!(input, Pℓ_emu.InMinMax)
     output = Array(run_emulator(input, Pℓ_emu.TrainedEmulator))
     inv_maximin_output!(output, Pℓ_emu.OutMinMax)
-    return reshape(output, Int(length(output)/length(Pℓ_emu.rgrid)), :)
+    return output#reshape(output, Int(length(output)/length(Pℓ_emu.rgrid)), :)
 end
 
 function run_emulator(input, trained_emulator::SimpleChainsEmulator)
