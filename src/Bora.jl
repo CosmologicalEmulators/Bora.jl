@@ -58,11 +58,14 @@ function BroadBand(r, bbpar)
     # b01, b21, b41,
     # b02, b22, b42]
     r⁻¹ = r.^-1 #this is just to improve performance
+    #TODO it is possible to evaluate this once, for each grid, and not repeat this evaluation
+    #at each step of the MonteCarlo. Understand if this is worth doing it
     r_pow = zeros(3, length(r))
 
     for i in 1:3
         r_pow[i, :] = r⁻¹.^i
     end
+   # also this one may be evaluated once per grid
 
     norm=0.0015#norm rappresenting the value of xi at r=rref
     rref=80.
