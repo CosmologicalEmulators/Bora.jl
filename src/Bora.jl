@@ -65,7 +65,9 @@ function run_emulator(input, trained_emulator::SimpleChainsEmulator)
     return trained_emulator.Architecture(input, trained_emulator.Weights)
 end
 
-function BroadBand(r, bbpar)
+
+"""
+function ComputeBroadBand(r, bbpar)
     #I expect to receive the bbpar as a 1D array, in the following order
     # [b00,b01,b02, b20,b22,b23, b40,b41,b42]
     ℓs = [0,2,4]
@@ -77,7 +79,7 @@ function BroadBand(r, bbpar)
     # b02, b22, b42]
     r⁻¹ = r.^-1 #this is just to improve performance
     #TODO it is possible to evaluate this once, for each grid, and not repeat this evaluation
-    #at each step of the MonteCarlo. Understand if this is worth doing it
+    #at each step of the MonteCarlo. Understand if it is worth doing it
     r_pow = zeros(3, length(r))
 
     for i in 1:3
@@ -87,13 +89,35 @@ function BroadBand(r, bbpar)
 
     norm=0.0015#norm rappresenting the value of xi at r=rref
     rref=80.
-    # probably Elena would prefer a dictionary. Please, consider to implement it
     for l in 1:3
         for i in 1:3
             BB[l,:] .+= bbpar_reshaped[l,i]*r_pow[i,:]*norm*rref^(i)
         end
     end
     return BB
+end
+"""
+
+function ComputeBroadBand(r, bbpar)
+    ℓs = [0,2,4]
+    BB = zeros(length(ℓs),length(r))
+    bbpar_reshaped = reshape(bbpar, 3,3)'
+    norm=0.0015#norm rappresenting the value of xi at r=rref
+    rref=80.
+    for l in 1:3
+        for i in 1:3
+            BB[l,:] .+= bbpar_reshaped[l,i]*r.^(-i+1)*norm*rref^(i-1)
+        end
+    end
+    return BB
+end
+
+function ComputeBora(input_params, Pℓs_emu::CompleteEmulator)
+    cosmo_params = input_params[1:7]
+    bb_params = input_params[8:16]
+    Pls = ComputePℓs(cosmo_params, Pℓs_emu)
+    BB = ComputeBroadBand(Pℓs_emu.rgrid, bb_params)
+    return Pls .+ BB
 end
 
 end # module
