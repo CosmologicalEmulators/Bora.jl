@@ -45,11 +45,10 @@ abstract type AbstractCompleteEmulator end
 end
 
 function ComputePℓs(input_params, Pℓs_emu::CompleteEmulator)
-    output = zeros(3, length(Pℓs_emu.rgrid))
-    output[1,:] = ComputePℓ(input_params, Pℓs_emu.PℓMono)
-    output[2,:] = ComputePℓ(input_params, Pℓs_emu.PℓQuadru)
-    output[3,:] = ComputePℓ(input_params, Pℓs_emu.PℓHexadeca)
-    return output
+    output_l0 = ComputePℓ(input_params, Pℓs_emu.PℓMono)
+    output_l2 = ComputePℓ(input_params, Pℓs_emu.PℓQuadru)
+    output_l4 = ComputePℓ(input_params, Pℓs_emu.PℓHexadeca)
+    return Array(hcat(output_l0, output_l2, output_l4)')
 end
 
 
@@ -98,9 +97,9 @@ function ComputeBroadBand(r, bbpar)
 end
 """
 
-function ComputeBroadBand(r, bbpar)
+function ComputeBroadBand(r, bbpar::Array{T}) where T
     ℓs = [0,2,4]
-    BB = zeros(length(ℓs),length(r))
+    BB = zeros(T, length(ℓs),length(r))
     bbpar_reshaped = reshape(bbpar, 3,3)'
     norm=0.0015#norm rappresenting the value of xi at r=rref
     rref=80.
@@ -115,6 +114,20 @@ end
 function ComputeBora(input_params, Pℓs_emu::CompleteEmulator)
     cosmo_params = input_params[1:7]
     bb_params = input_params[8:16]
+    Pls = ComputePℓs(cosmo_params, Pℓs_emu)
+    BB = ComputeBroadBand(Pℓs_emu.rgrid, bb_params)
+    return Pls .+ BB
+end
+
+function ComputeBora(input_cosmo, input_broadband, Pℓs_emu::CompleteEmulator)
+    Pls = ComputePℓs(input_cosmo, Pℓs_emu)
+    BB = ComputeBroadBand(Pℓs_emu.rgrid, input_broadband)
+    return Pls .+ BB
+end
+
+function ComputeBoraReduced(input_params, Pℓs_emu::CompleteEmulator)
+    cosmo_params = input_params[1:6]
+    bb_params = input_params[7:15]
     Pls = ComputePℓs(cosmo_params, Pℓs_emu)
     BB = ComputeBroadBand(Pℓs_emu.rgrid, bb_params)
     return Pls .+ BB
