@@ -64,39 +64,6 @@ function run_emulator(input, trained_emulator::SimpleChainsEmulator)
     return trained_emulator.Architecture(input, trained_emulator.Weights)
 end
 
-
-"""
-function ComputeBroadBand(r, bbpar)
-    #I expect to receive the bbpar as a 1D array, in the following order
-    # [b00,b01,b02, b20,b22,b23, b40,b41,b42]
-    ℓs = [0,2,4]
-    BB = zeros(length(ℓs),length(r))
-    bbpar_reshaped = reshape(bbpar, 3,3)
-    # after reshaping, the new matrix is
-    #[b00, b20, b40,
-    # b01, b21, b41,
-    # b02, b22, b42]
-    r⁻¹ = r.^-1 #this is just to improve performance
-    #TODO it is possible to evaluate this once, for each grid, and not repeat this evaluation
-    #at each step of the MonteCarlo. Understand if it is worth doing it
-    r_pow = zeros(3, length(r))
-
-    for i in 1:3
-        r_pow[i, :] = r⁻¹.^i
-    end
-   # also this one may be evaluated once per grid
-
-    norm=0.0015#norm rappresenting the value of xi at r=rref
-    rref=80.
-    for l in 1:3
-        for i in 1:3
-            BB[l,:] .+= bbpar_reshaped[l,i]*r_pow[i,:]*norm*rref^(i)
-        end
-    end
-    return BB
-end
-"""
-
 function ComputeBroadBand(r, bbpar::Array{T}) where T
     ℓs = [0,2,4]
     BB = zeros(T, length(ℓs),length(r))
