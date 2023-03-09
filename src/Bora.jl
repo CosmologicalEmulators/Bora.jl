@@ -17,24 +17,24 @@ abstract type AbstractCompleteEmulator end
 
 @kwdef mutable struct CompleteEmulator <: AbstractCompleteEmulator
     rgrid::Array
-    PℓMono::AbstractξℓEmulator
-    PℓQuadru::AbstractξℓEmulator
-    PℓHexadeca::AbstractξℓEmulator
+    ξℓMono::AbstractξℓEmulator
+    ξℓQuad::AbstractξℓEmulator
+    ξℓHexa::AbstractξℓEmulator
 end
 
-function get_ξℓs(input_params, Pℓs_emu::CompleteEmulator)
-    output_l0 = get_ξℓ(input_params, Pℓs_emu.PℓMono)
-    output_l2 = get_ξℓ(input_params, Pℓs_emu.PℓQuadru)
-    output_l4 = get_ξℓ(input_params, Pℓs_emu.PℓHexadeca)
+function get_ξℓs(input_params, ξℓs_emu::CompleteEmulator)
+    output_l0 = get_ξℓ(input_params, ξℓs_emu.ξℓMono)
+    output_l2 = get_ξℓ(input_params, ξℓs_emu.ξℓQuad)
+    output_l4 = get_ξℓ(input_params, ξℓs_emu.ξℓHexa)
     return Array(hcat(output_l0, output_l2, output_l4)')
 end
 
 
-function get_ξℓ(input_params, Pℓ_emu::ξℓEmulator)
+function get_ξℓ(input_params, ξℓ_emu::ξℓEmulator)
     input = deepcopy(input_params)
-    maximin_input!(input, Pℓ_emu.InMinMax)
-    output = Array(run_emulator(input, Pℓ_emu.TrainedEmulator))
-    inv_maximin_output!(output, Pℓ_emu.OutMinMax)
+    maximin_input!(input, ξℓ_emu.InMinMax)
+    output = Array(run_emulator(input, ξℓ_emu.TrainedEmulator))
+    inv_maximin_output!(output, ξℓ_emu.OutMinMax)
     return output
 end
 
@@ -72,9 +72,9 @@ function get_broadband(r, bbpar::Matrix{T}) where T
     return BB
 end
 
-function get_ξℓs(cosmo_params, bb_params, Pℓs_emu::CompleteEmulator)
-    Pls = get_ξℓs(cosmo_params, Pℓs_emu)
-    BB = get_broadband(Pℓs_emu.rgrid, bb_params)
+function get_ξℓs(cosmo_params, bb_params, ξℓs_emu::CompleteEmulator)
+    Pls = get_ξℓs(cosmo_params, ξℓs_emu)
+    BB = get_broadband(ξℓs_emu.rgrid, bb_params)
     return Pls .+ BB
 end
 
