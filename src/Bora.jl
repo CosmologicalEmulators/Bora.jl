@@ -29,7 +29,6 @@ function get_ξℓs(input_params, ξℓs_emu::CompleteEmulator)
     return Array(hcat(output_l0, output_l2, output_l4)')
 end
 
-
 function get_ξℓ(input_params, ξℓ_emu::ξℓEmulator)
     input = deepcopy(input_params)
     maximin_input!(input, ξℓ_emu.InMinMax)
