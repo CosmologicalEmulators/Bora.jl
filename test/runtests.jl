@@ -1,3 +1,5 @@
+using Pkg
+Pkg.add(url="https://github.com/CosmologicalEmulators/AbstractEmulator.jl")
 using Test
 using SimpleChains
 using Static
@@ -11,6 +13,15 @@ mlpd = SimpleChain(
   TurboDense(tanh, 64),
   TurboDense(identity, 40)
 )
+
+try
+    push!(LOAD_PATH, "@v#.#") # assumes you have CirculantCov in your global environment
+    using AbstractEmulator
+catch
+    @warn """AbstractEmulator.jl not found, not testing EquiRect fields.
+    Run `pkg> add https://github.com/EthanAnderes/CirculantCov.jl` to add this package.
+    """
+end
 
 weights = SimpleChains.init_params(mlpd)
 emu = Bora.SimpleChainsEmulator(Architecture = mlpd, Weights = weights)
