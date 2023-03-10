@@ -1,6 +1,7 @@
 using Test
 using SimpleChains
 using Static
+using Bora
 
 mlpd = SimpleChain(
   static(6),
