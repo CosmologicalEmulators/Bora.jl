@@ -40,9 +40,9 @@ jobs:
             ${{ runner.os }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-test-
             ${{ runner.os }}-
-      - run: julia -e 'using Pkg; Pkg.add(url="https://github.com/CosmologicalEmulators/AbstractEmulator.jl")'
+      - run: julia --project=@. -e 'using Pkg; Pkg.add(url="https://github.com/CosmologicalEmulators/AbstractEmulator.jl"); Pkg.instantiate()'
       - name: Install dependencies
-        run: julia -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd()))'
+        run: julia --project=@. -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
