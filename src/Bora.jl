@@ -29,6 +29,7 @@ function get_ξℓs(input_params::Vector, ξℓs_emu::CompleteEmulator)
     return Array(hcat(output_l0, output_l2, output_l4)')
 end
 
+
 function get_ξℓs(input_params::Matrix, ξℓs_emu::CompleteEmulator)
     dim_f, dim_v = size(input_params)
     len_r = length(ξℓs_emu.rgrid)
