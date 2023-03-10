@@ -22,13 +22,26 @@ abstract type AbstractCompleteEmulator end
     ξℓHexa::AbstractξℓEmulator
 end
 
-function get_ξℓs(input_params, ξℓs_emu::CompleteEmulator)
+function get_ξℓs(input_params::Vector, ξℓs_emu::CompleteEmulator)
     output_l0 = get_ξℓ(input_params, ξℓs_emu.ξℓMono)
     output_l2 = get_ξℓ(input_params, ξℓs_emu.ξℓQuad)
     output_l4 = get_ξℓ(input_params, ξℓs_emu.ξℓHexa)
     return Array(hcat(output_l0, output_l2, output_l4)')
 end
 
+
+function get_ξℓs(input_params::Matrix, ξℓs_emu::CompleteEmulator)
+    dim_f, dim_v = size(input_params)
+    len_r = length(ξℓs_emu.rgrid)
+    output_l0 = get_ξℓ(input_params, ξℓs_emu.ξℓMono)
+    output_l2 = get_ξℓ(input_params, ξℓs_emu.ξℓQuad)
+    output_l4 = get_ξℓ(input_params, ξℓs_emu.ξℓHexa)
+    result = zeros(3, len_r, dim_v)
+    for i in 1:dim_v
+        result[:,:,i] = Array(hcat(output_l0[:,i], output_l2[:,i], output_l4[:,i])')
+    end
+    return result
+end
 
 function get_ξℓ(input_params, ξℓ_emu::ξℓEmulator)
     input = deepcopy(input_params)
