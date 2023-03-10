@@ -24,9 +24,9 @@ bora_complete_emu = Bora.CompleteEmulator(rgrid=r_test, ξℓMono=bora_emu, ξ�
 
 @testset "Bora tests" begin
     cosmo = rand(6)
-    cosmo_vec = hstack(cosmo, cosmo)
+    cosmo_vec = hcat(cosmo, cosmo)
     bb = rand(9)
-    bb_vec = hstack(bb, bb)
+    bb_vec = hcat(bb, bb)
     output = Bora.get_ξℓs(cosmo, bb, bora_complete_emu)
     output_vec = Bora.get_ξℓs(cosmo_vec, bb_vec, bora_complete_emu)
     tests_zeros = Bora.get_broadband(r_test, zeros(9,100))
