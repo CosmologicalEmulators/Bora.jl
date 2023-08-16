@@ -1,7 +1,10 @@
 name = "Bora"
 uuid = "f2bc0970-dd97-4292-b510-1db90d18516e"
 authors = ["marcobonici <bonici.marco@gmail.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
-AbstractEmulator = "0dc76ace-04b2-4bd9-b691-6d8501953659"
+AbstractCosmologicalEmulators = "c83c1981-e5c4-4837-9eb8-c9b1572acfc6"
+
+[compat]
+AbstractCosmologicalEmulators = "0.3.1"

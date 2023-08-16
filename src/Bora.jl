@@ -2,7 +2,8 @@ module Bora
 
 
 using Base: @kwdef
-using AbstractEmulator
+using AbstractCosmologicalEmulators
+import AbstractCosmologicalEmulators.get_emulator_description
 
 abstract type AbstractξℓEmulator end
 
@@ -89,6 +90,10 @@ function get_ξℓs(cosmo_params, bb_params, ξℓs_emu::CompleteEmulator)
     Pls = get_ξℓs(cosmo_params, ξℓs_emu)
     BB = get_broadband(ξℓs_emu.rgrid, bb_params)
     return Pls .+ BB
+end
+
+function get_emulator_description(Clemu::AbstractξℓEmulator)
+    get_emulator_description(Clemu.TrainedEmulator)
 end
 
 end # module
