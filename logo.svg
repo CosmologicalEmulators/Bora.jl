@@ -10,6 +10,9 @@
    xml:space="preserve"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="logo.svg"
+   inkscape:export-filename="logo.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +28,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.79794936"
-     inkscape:cx="287.61224"
+     inkscape:cx="284.47921"
      inkscape:cy="230.59107"
      inkscape:window-width="1854"
      inkscape:window-height="1131"
@@ -330,12 +333,12 @@
        xml:space="preserve"
        transform="matrix(0.28937088,0,0,0.28937088,38.962706,3.8503097)"
        id="text289"
-       style="font-style:normal;font-weight:normal;font-size:192px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect291);fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4328)"><tspan
+       style="font-style:normal;font-weight:normal;font-size:192px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect291);display:inline;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter4328)"><tspan
          x="42.587891"
          y="945.51049"
-         id="tspan5075"><tspan
+         id="tspan5143"><tspan
            style="font-family:'TeX Gyre Pagella Math';-inkscape-font-specification:'TeX Gyre Pagella Math'"
-           id="tspan5073">Bora.jl</tspan></tspan></text><path
+           id="tspan5141">Bora.jl</tspan></tspan></text><path
        style="fill:none;stroke:#9558b2;stroke-width:2.4575;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4316)"
        d="m 67.457901,194.78859 c 1.899597,-5.11569 3.212292,-10.90374 7.206674,-14.73243 1.898417,-1.81967 4.451691,-3.15874 7.032917,-3.28415 2.675615,-0.13 5.315188,0.64451 7.789335,1.55334 6.958349,2.55602 13.381333,6.31054 20.021673,9.56338 10.67514,5.22932 21.45821,10.50385 32.9325,13.65471 2.24758,0.61719 4.51982,1.7639 6.85191,1.50841 2.72994,-0.29908 5.10143,-1.91913 7.23786,-3.51663 3.62881,-2.71341 6.98795,-6.39388 11.69661,-7.05136 3.59572,-0.50208 6.91551,1.41697 9.62809,3.66676 4.54188,3.76699 8.57093,8.30522 13.77517,11.1418 3.69488,2.0139 7.75578,3.19774 11.72055,4.54559"
        id="path420"
