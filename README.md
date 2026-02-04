@@ -9,6 +9,7 @@
 Repo containing the code for BaO Reconstruction emulAtor.
 
 Authors:
+- Andrea Crespi, PhD Student at Waterloo Centre for Astrophysics (main mantainer)
 - Marco Bonici, PostDoctoral Researcher at Waterloo Centre for Astrophysics
 - Elena Sarpa, PostDoctoral Researcher at IFPU Trieste
 - Alfonso Veropalumbo, PostDoctoral Researcher at Università degli Studi di Genova
