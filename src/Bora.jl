@@ -4,6 +4,10 @@ module Bora
 using Base: @kwdef
 using AbstractCosmologicalEmulators
 import AbstractCosmologicalEmulators.get_emulator_description
+import AbstractCosmologicalEmulators.init_emulator
+using NPZ
+using JSON
+import JSON.parsefile
 
 abstract type AbstractξℓEmulator end
 
@@ -21,6 +25,35 @@ abstract type AbstractCompleteEmulator end
     ξℓMono::AbstractξℓEmulator
     ξℓQuad::AbstractξℓEmulator
     ξℓHexa::AbstractξℓEmulator
+end
+
+function load_multipole_emulator(path, ℓ; s_file="s.npy", weights_file="weights.npy", inminmax_file="inminmax.npy",
+    outminmax_file="outminmax.npy", nn_setup_file="nn_setup.json")
+    
+    NN_dict = parsefile(joinpath(path, nn_setup_file))
+    
+    weights = npzread(joinpath(path, string(ℓ), weights_file))
+    s_test = npzread(joinpath(path, s_file))
+    
+    trained_emu = init_emulator(NN_dict, weights, SimpleChainsEmulator)
+    ξℓ_emu = Bora.ξℓEmulator(TrainedEmulator = trained_emu, rgrid=s_test,
+                                InMinMax = npzread(joinpath(path, string(ℓ), inminmax_file)),
+                                OutMinMax = npzread(joinpath(path, string(ℓ), outminmax_file)))
+    return ξℓ_emu
+end
+
+function load_complete_emulator(path; s_file="s.npy", weights_file="weights.npy", inminmax_file="inminmax.npy",
+    outminmax_file="outminmax.npy", nn_setup_file="nn_setup.json")
+    @info "🔄 Loading BORA emulator"
+    ξℓ0_emu = load_multipole_emulator(path, 0, s_file=s_file, weights_file=weights_file, inminmax_file=inminmax_file,
+        outminmax_file=outminmax_file, nn_setup_file=nn_setup_file)
+    ξℓ2_emu = load_multipole_emulator(path, 2, s_file=s_file, weights_file=weights_file, inminmax_file=inminmax_file,
+        outminmax_file=outminmax_file, nn_setup_file=nn_setup_file)
+    ξℓ4_emu = load_multipole_emulator(path, 4, s_file=s_file, weights_file=weights_file, inminmax_file=inminmax_file,
+        outminmax_file=outminmax_file, nn_setup_file=nn_setup_file)
+    complete_ξℓ = Bora.CompleteEmulator(rgrid=ξℓ0_emu.rgrid, ξℓMono=ξℓ0_emu, ξℓQuad=ξℓ2_emu, ξℓHexa=ξℓ4_emu);
+    @info "✅ Loading completed"
+    return complete_ξℓ
 end
 
 function get_ξℓs(input_params::Vector, ξℓs_emu::CompleteEmulator)
@@ -45,11 +78,10 @@ function get_ξℓs(input_params::Matrix, ξℓs_emu::CompleteEmulator)
 end
 
 function get_ξℓ(input_params, ξℓ_emu::ξℓEmulator)
-    input = deepcopy(input_params)
-    maximin_input!(input, ξℓ_emu.InMinMax)
+    input = maximin(input_params, ξℓ_emu.InMinMax)
     output = Array(run_emulator(input, ξℓ_emu.TrainedEmulator))
-    inv_maximin_output!(output, ξℓ_emu.OutMinMax)
-    return output
+    output_params = inv_maximin(output, ξℓ_emu.OutMinMax)
+    return output_params
 end
 
 function get_broadband(r, bbpar::Vector{T}) where T
