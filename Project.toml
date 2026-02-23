@@ -1,7 +1,7 @@
 name = "Bora"
 uuid = "f2bc0970-dd97-4292-b510-1db90d18516e"
-authors = ["marcobonici <bonici.marco@gmail.com>"]
 version = "0.3.1"
+authors = ["marcobonici <bonici.marco@gmail.com>"]
 
 [deps]
 AbstractCosmologicalEmulators = "c83c1981-e5c4-4837-9eb8-c9b1572acfc6"
@@ -9,6 +9,6 @@ JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 NPZ = "15e1cf62-19b3-5cfa-8e77-841668bca605"
 
 [compat]
-AbstractCosmologicalEmulators = "0.8"
+AbstractCosmologicalEmulators = "0.8, 0.9"
 JSON = "1.4.0"
 NPZ = "0.4.3"
